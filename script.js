@@ -1,18 +1,18 @@
-function checkCode() {
-    const enteredCode = document.getElementById("accessCode").value;
-    const secretHash = btoa("SHOBHIT2025"); // Encoded secret
+fetch('courses.json')
+  .then(response => response.json())
+  .then(courses => {
+    const courseContainer = document.getElementById('course-container');
 
-    if (btoa(enteredCode) === secretHash) {
-        localStorage.setItem("accessGranted", "true");
-        window.location.href = "courses.html";
-    } else {
-        document.getElementById("message").textContent = "Incorrect code. Please try again.";
-    }
-}
+    courses.forEach(course => {
+      const card = document.createElement('div');
+      card.classList.add('course-card');
 
-function verifyAccess() {
-    if (localStorage.getItem("accessGranted") !== "true") {
-        alert("Access denied! Please enter the secret code first.");
-        window.location.href = "login.html";
-    }
-}
+      card.innerHTML = `
+        <img src="${course.image}" alt="${course.title}">
+        <h3>${course.title}</h3>
+      `;
+
+      courseContainer.appendChild(card);
+    });
+  })
+  .catch(error => console.error('Error loading courses:', error));
